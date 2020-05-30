@@ -68,6 +68,41 @@ class Fundo(pygame.sprite.Sprite):
     def go_fundo(self):
         self.update()
 
+"""
+class Player(pygame.sprite.Sprite):
+    
+    def __init__(self,velocidade, posX_player, posY_player):
+        super().__init__()
+        img_dir = os.path.join(os.path.dirname(__file__), 'Imagens')
+        try:
+            self.image = pygame.image.load(os.path.join(img_dir,'ferrari.png')).convert_alpha()     
+        except pygame.error:
+            print('Erro ao tentar ler imagem: police.png')
+            sys.exit()
+        self.image = pygame.transform.scale(self.image,(100,207)).convert_alpha()
+
+        self.rect = self.image.get_rect()
+        self.rect.x = posX_player
+        self.rect.y = posY_player
+        self.velocidade_player = velocidade
+        delta_player =  {"esquerda":0, "direita":0}
+        self.delta_player = delta_player
+
+    def update(self, delta_time):
+        self.posX_player += (self.delta_player["direita"] - self.delta_player["esquerda"]) * self.velocidade_player * delta_time
+        keys = pygame.key.get_pressed()
+        if keys == pygame.KEYDOWN:
+            if keys[pygame.K_LEFT]:
+                self.delta_player["esquerda"] = 1
+            if keys[pygame.K_RIGHT]:
+                self.delta_player["direita"] = 1
+
+            if keys == pygame.KEYUP:
+                if keys[pygame.K_LEFT]:
+                    self.delta_player["esquerda"] = 0
+                if keys[pygame.K_RIGHT]:
+                    self.delta_player["direita"] = 0
+"""
 
 class Police(pygame.sprite.Sprite):
 
@@ -151,6 +186,7 @@ class Tree(pygame.sprite.Sprite):
             self.rect.y += self.velocidade_tree * delta_time
             
             
+
 #Função principal
 def main():
     """Rotina principal do jogo"""
@@ -309,7 +345,7 @@ def main():
             sprites.draw(superficie)
             superficie.blit(player, pos_player)
             superficie.blit(texto, pos_texto)
-
+            
 
             #Faz a atualização da tela
             pygame.display.flip()
