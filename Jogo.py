@@ -52,7 +52,7 @@ assets['background_img'] = pygame.transform.scale(assets['background_img'], (LAR
 
 # Carregando sons do jogo: 
 pygame.mixer.music.load(os.path.join(som_dir, "MusicaFundo.oga"))
-pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.set_volume(0.3)
 
 
 #Classes do jogo
@@ -185,8 +185,6 @@ class Tree(pygame.sprite.Sprite):
             self.rect.y += self.velocidade_tree * delta_time
    
 
-
-
 #Cores para o jogo
 CINZA = (127, 127, 127)
 AZUL = (0, 0, 255)
@@ -247,6 +245,9 @@ intro = Fundo_intro("Bem Vindo","ao","Corona Run","Vamos ver se você é um bom 
 clock = pygame.time.Clock() 
 FPS=60 #Velocidade que atualiza as imagens
 
+#Rodando musica de fundo
+pygame.mixer.music.play(-1)
+
 RODANDO = 0
 PAUSADO = 1
 
@@ -304,9 +305,7 @@ while JOGANDO:
             if evento.key == pygame.K_RIGHT:
                 player.delta_player["direita"] = 0
             
-        #Posição do player
-        #player.rect.x += (player.delta_player["direita"] - player.delta_player["esquerda"]) * player.velocidade_player * delta_time
-
+        
     #Placar de tempo
     if timer<60 and jogo!= PAUSADO:
         timer += 1
@@ -332,7 +331,30 @@ while JOGANDO:
     hit_player_tree = pygame.sprite.spritecollide(player, all_tree, True)
 
     if len(hit_player_police) > 0 or len(hit_player_oil) > 0 or len(hit_player_tree) > 0: 
-        print("hit")
+        mixer.music.pause()
+        #Classe da tela final
+        class Fundo_Fim(pygame.sprite.Sprite):
+            def __init__(self, texto1, texto2, cor_da_letra, tamanho_do_titulo, tamanho_do_titulo2, cor_fundo):
+                tela_fim = pygame.display.set_mode((LARGURA,COMPRIMENTO))
+                tela_fim.fill(cor_fundo)
+                self.fonte_fim = pygame.font.SysFont(None, tamanho_do_titulo)
+                self.superficie1 = self.fonte_fim.render(texto1, True, cor_da_letra)
+                tela_fim.blit(self.superficie1, ((tela_fim.get_width()-self.superficie1.get_width())/2, 100))
+                self.fonte_fim2 = pygame.font.SysFont(None, tamanho_do_titulo2)
+                self.superficie2 = self.fonte_fim2.render(texto2, True, cor_da_letra)
+                tela_fim.blit(self.superficie2, ((tela_fim.get_width()-self.superficie2.get_width())/2, 300))
+                pygame.display.update()
+        tela_fim = Fundo_Fim("Fim de jogo", "Você durou {0} segundos".format(tempo_segundo),(255,255,255),80,60,(0,0,0))      
+        tela_fim.__init__
+        JOGANDO = False
+        contador = 0
+        while contador < 1e100:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                    pygame.quit()
+                    sys.exit()
+                else:
+                    contador += 1
 
             
     #Movimentação do fundo
@@ -346,10 +368,10 @@ while JOGANDO:
     fundo.rect2.x += fundo.rect2.width
 
     superficie.blit(fundo.image, fundo.rect2)
-
-    #Rodando musica de fundo
-    pygame.mixer.music.play(-1)
-            
+    
+    #Desenha o placar
+    superficie.blit(texto, pos_texto)
+         
     #Desenhando os sprites
     all_sprites.draw(superficie)
             
