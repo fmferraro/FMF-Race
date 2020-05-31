@@ -58,33 +58,36 @@ pygame.mixer.music.set_volume(0.3)
 #Classes do jogo
 
 class Fundo_intro(pygame.sprite.Sprite):
-    def __init__(self,texto1,texto2,texto3,texto4,texto5,texto6,texto7,texto8, cor_da_letra, tamanho_do_titulo,tamanho_da_instrucao, cor_fundo):
+    def __init__(self,texto1,texto2,texto3,texto4,texto5,texto6,texto7,texto8,texto9, cor_da_letra, tamanho_do_titulo,tamanho_da_instrucao, cor_fundo):
         tela_jogo2 = pygame.display.set_mode(tamanho_tela)
         tela_jogo2.fill(cor_fundo)
         self.fonte_texto1 = pygame.font.SysFont(None, tamanho_do_titulo)
         self.superficie1 = self.fonte_texto1.render(texto1, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie1, ((tela_jogo2.get_width()-self.superficie1.get_width())/2, 60))
+        tela_jogo2.blit(self.superficie1, ((tela_jogo2.get_width()-self.superficie1.get_width())/2, 40))
         self.fonte_texto2 = pygame.font.SysFont(None, tamanho_do_titulo)
         self.superficie2 = self.fonte_texto2.render(texto2, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie2, ((tela_jogo2.get_width()-self.superficie2.get_width())/2, 120))
+        tela_jogo2.blit(self.superficie2, ((tela_jogo2.get_width()-self.superficie2.get_width())/2, 100))
         self.fonte_texto3 = pygame.font.SysFont(None, tamanho_do_titulo)
         self.superficie3 = self.fonte_texto3.render(texto3, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie3, ((tela_jogo2.get_width()-self.superficie3.get_width())/2, 180))
+        tela_jogo2.blit(self.superficie3, ((tela_jogo2.get_width()-self.superficie3.get_width())/2, 160))
         self.fonte_texto4 = pygame.font.SysFont(None, tamanho_da_instrucao)
         self.superficie4 = self.fonte_texto4.render(texto4, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie4, ((tela_jogo2.get_width()-self.superficie3.get_width())/2, 300))
+        tela_jogo2.blit(self.superficie4, ((tela_jogo2.get_width()-self.superficie3.get_width())/2, 260))
         self.fonte_texto5 = pygame.font.SysFont(None, tamanho_da_instrucao)
         self.superficie5 = self.fonte_texto5.render(texto5, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie5, ((tela_jogo2.get_width()-self.superficie5.get_width())/2, 360))
+        tela_jogo2.blit(self.superficie5, ((tela_jogo2.get_width()-self.superficie5.get_width())/2, 320))
         self.fonte_texto6 = pygame.font.SysFont(None, tamanho_da_instrucao)
         self.superficie6 = self.fonte_texto6.render(texto6, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie6, ((tela_jogo2.get_width()-self.superficie6.get_width())/2, 420))
+        tela_jogo2.blit(self.superficie6, ((tela_jogo2.get_width()-self.superficie6.get_width())/2, 380))
         self.fonte_texto7 = pygame.font.SysFont(None, tamanho_da_instrucao)
         self.superficie7 = self.fonte_texto7.render(texto7, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie7, ((tela_jogo2.get_width()-self.superficie7.get_width())/2, 480))
+        tela_jogo2.blit(self.superficie7, ((tela_jogo2.get_width()-self.superficie7.get_width())/2, 440))
         self.fonte_texto8 = pygame.font.SysFont(None, tamanho_da_instrucao)
         self.superficie8 = self.fonte_texto8.render(texto8, True, cor_da_letra)
-        tela_jogo2.blit(self.superficie8, ((tela_jogo2.get_width()-self.superficie8.get_width())/2, 540))
+        tela_jogo2.blit(self.superficie8, ((tela_jogo2.get_width()-self.superficie8.get_width())/2, 500))
+        self.fonte_texto9 = pygame.font.SysFont(None, tamanho_da_instrucao)
+        self.superficie9 = self.fonte_texto9.render(texto9, True, cor_da_letra)
+        tela_jogo2.blit(self.superficie9, ((tela_jogo2.get_width()-self.superficie9.get_width())/2, 560))
         pygame.display.update()
 
 class Fundo(pygame.sprite.Sprite):
@@ -238,7 +241,7 @@ font_pause = pygame.font.SysFont("arial black", 40)
 mixer.music.play(-1)
 
     
-intro = Fundo_intro("Bem Vindo","ao","Corona Run","Vamos ver se você é um bom piloto...","Corra o maior tempo possível sem bater!","Caso encoste em um obstáculo, sua corrida acaba","Pressione DIREITA ou ESQUERDA para mover o carro","Pressione ENTER para continuar", (BRANCO), 80,30, (CINZA))
+intro = Fundo_intro("Bem Vindo","ao","Corona Run","Vamos ver se você é um bom piloto...","Corra o maior tempo possível sem bater!","Caso encoste em um obstáculo, sua corrida acaba.","Pressione DIREITA ou ESQUERDA para mover o carro","Pressione P para pausar","Pressione ENTER para correr", (BRANCO), 80,30, (CINZA))
 
 
 #Objeto para controle da atualizações de imagens
@@ -254,7 +257,6 @@ PAUSADO = 1
 jogo = RODANDO
 
 #Loop da tela inicial
-
 Intro = True
 while Intro:
     intro.__init__
@@ -264,6 +266,7 @@ while Intro:
             Intro = False
         elif event.type == pygame.QUIT:
             pygame.quit()
+
 
 #Loop pricipal
 JOGANDO = True
@@ -334,17 +337,24 @@ while JOGANDO:
         mixer.music.pause()
         #Classe da tela final
         class Fundo_Fim(pygame.sprite.Sprite):
-            def __init__(self, texto1, texto2, cor_da_letra, tamanho_do_titulo, tamanho_do_titulo2, cor_fundo):
+            def __init__(self, texto1, texto2, texto3, texto4, cor_da_letra, tamanho_do_titulo, tamanho_do_titulo2, cor_fundo):
                 tela_fim = pygame.display.set_mode((LARGURA,COMPRIMENTO))
                 tela_fim.fill(cor_fundo)
                 self.fonte_fim = pygame.font.SysFont(None, tamanho_do_titulo)
                 self.superficie1 = self.fonte_fim.render(texto1, True, cor_da_letra)
                 tela_fim.blit(self.superficie1, ((tela_fim.get_width()-self.superficie1.get_width())/2, 100))
-                self.fonte_fim2 = pygame.font.SysFont(None, tamanho_do_titulo2)
+                self.fonte_fim2 = pygame.font.SysFont(None, tamanho_do_titulo)
                 self.superficie2 = self.fonte_fim2.render(texto2, True, cor_da_letra)
-                tela_fim.blit(self.superficie2, ((tela_fim.get_width()-self.superficie2.get_width())/2, 300))
+                tela_fim.blit(self.superficie2, ((tela_fim.get_width()-self.superficie2.get_width())/2, 200))
+                self.fonte_fim3 = pygame.font.SysFont(None, tamanho_do_titulo2)
+                self.superficie3 = self.fonte_fim3.render(texto3, True, cor_da_letra)
+                tela_fim.blit(self.superficie3, ((tela_fim.get_width()-self.superficie3.get_width())/2, 300))
+                self.fonte_fim4 = pygame.font.SysFont(None, tamanho_do_titulo2)
+                self.superficie4 = self.fonte_fim4.render(texto4, True, cor_da_letra)
+                tela_fim.blit(self.superficie4, ((tela_fim.get_width()-self.superficie4.get_width())/2, 400))
+                
                 pygame.display.update()
-        tela_fim = Fundo_Fim("Fim de jogo", "Você durou {0} segundos".format(tempo_segundo),(255,255,255),80,60,(0,0,0))      
+        tela_fim = Fundo_Fim("Acabou sua corrida...", "Você bateu!", "Seu tempo foi de {0} segundos".format(tempo_segundo),"Tente novamente",(255,255,255),80,60,(0,0,0))      
         tela_fim.__init__
         JOGANDO = False
         contador = 0
@@ -370,8 +380,7 @@ while JOGANDO:
     superficie.blit(fundo.image, fundo.rect2)
     
     #Desenha o placar
-    superficie.blit(texto, pos_texto)
-         
+    superficie.blit(texto, pos_texto)     
     #Desenhando os sprites
     all_sprites.draw(superficie)
             
