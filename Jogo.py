@@ -95,7 +95,9 @@ class Fundo(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = assets['background_img']
         self.rect = self.image.get_rect()
-        self.x_mov = 0
+        self.rect2 = self.image.get_rect()
+        self.rect2.y = -600
+        self.y_mov = 0
 
 class Player(pygame.sprite.Sprite):
     def __init__ (self, groups, assets):
@@ -103,6 +105,8 @@ class Player(pygame.sprite.Sprite):
 
         self.image = assets['player_img']
         self.rect = self.image.get_rect()
+
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.rect.x = 250
         self.rect.y = 400
@@ -131,7 +135,7 @@ class Police(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.x = randint(80, 320)
-        self.rect.y = 0
+        self.rect.y = -100
 
         self.velocidade_police = 0.2
 
@@ -143,7 +147,7 @@ class Police(pygame.sprite.Sprite):
             self.rect.y = 0
             self.rect.x = randint(80, 320)
             self.rect.y += self.velocidade_police * delta_time
-        
+
 
 class Oil(pygame.sprite.Sprite):
     def __init__(self, assets):
@@ -186,6 +190,26 @@ class Tree(pygame.sprite.Sprite):
             self.rect.y = 0
             self.rect.x = randint(80, 430)
             self.rect.y += self.velocidade_tree * delta_time
+
+
+
+class Fundo_Fim(pygame.sprite.Sprite):
+    def __init__(self, texto1, texto2, texto3, texto4, cor_da_letra, tamanho_do_titulo, tamanho_do_titulo2, cor_fundo):
+        tela_fim = pygame.display.set_mode((LARGURA,COMPRIMENTO))
+        tela_fim.fill(cor_fundo)
+        self.fonte_fim = pygame.font.SysFont(None, tamanho_do_titulo)
+        self.superficie1 = self.fonte_fim.render(texto1, True, cor_da_letra)
+        tela_fim.blit(self.superficie1, ((tela_fim.get_width()-self.superficie1.get_width())/2, 100))
+        self.fonte_fim2 = pygame.font.SysFont(None, tamanho_do_titulo)
+        self.superficie2 = self.fonte_fim2.render(texto2, True, cor_da_letra)
+        tela_fim.blit(self.superficie2, ((tela_fim.get_width()-self.superficie2.get_width())/2, 200))
+        self.fonte_fim3 = pygame.font.SysFont(None, tamanho_do_titulo2)
+        self.superficie3 = self.fonte_fim3.render(texto3, True, cor_da_letra)
+        tela_fim.blit(self.superficie3, ((tela_fim.get_width()-self.superficie3.get_width())/2, 300))
+        self.fonte_fim4 = pygame.font.SysFont(None, tamanho_do_titulo2)
+        self.superficie4 = self.fonte_fim4.render(texto4, True, cor_da_letra)
+        tela_fim.blit(self.superficie4, ((tela_fim.get_width()-self.superficie4.get_width())/2, 400))
+        pygame.display.update()
    
 
 #Cores para o jogo
@@ -259,7 +283,6 @@ jogo = RODANDO
 #Loop da tela inicial
 Intro = True
 while Intro:
-    intro.__init__
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         if keys[pygame.K_RETURN]:
@@ -267,11 +290,13 @@ while Intro:
         elif event.type == pygame.QUIT:
             pygame.quit()
 
+delta_time=clock.tick(FPS)
 
 #Loop pricipal
 JOGANDO = True
 while JOGANDO:
 
+    
     delta_time=clock.tick(FPS)
 
     #Eventos do jogo
@@ -301,7 +326,7 @@ while JOGANDO:
                     mixer.music.unpause()
                     jogo = RODANDO
 
-            #Verifica se soltou alguma tecla
+        #Verifica se soltou alguma tecla
         if evento.type == pygame.KEYUP:
             if evento.key == pygame.K_LEFT:
                 player.delta_player["esquerda"] = 0
@@ -335,25 +360,6 @@ while JOGANDO:
 
     if len(hit_player_police) > 0 or len(hit_player_oil) > 0 or len(hit_player_tree) > 0: 
         mixer.music.pause()
-        #Classe da tela final
-        class Fundo_Fim(pygame.sprite.Sprite):
-            def __init__(self, texto1, texto2, texto3, texto4, cor_da_letra, tamanho_do_titulo, tamanho_do_titulo2, cor_fundo):
-                tela_fim = pygame.display.set_mode((LARGURA,COMPRIMENTO))
-                tela_fim.fill(cor_fundo)
-                self.fonte_fim = pygame.font.SysFont(None, tamanho_do_titulo)
-                self.superficie1 = self.fonte_fim.render(texto1, True, cor_da_letra)
-                tela_fim.blit(self.superficie1, ((tela_fim.get_width()-self.superficie1.get_width())/2, 100))
-                self.fonte_fim2 = pygame.font.SysFont(None, tamanho_do_titulo)
-                self.superficie2 = self.fonte_fim2.render(texto2, True, cor_da_letra)
-                tela_fim.blit(self.superficie2, ((tela_fim.get_width()-self.superficie2.get_width())/2, 200))
-                self.fonte_fim3 = pygame.font.SysFont(None, tamanho_do_titulo2)
-                self.superficie3 = self.fonte_fim3.render(texto3, True, cor_da_letra)
-                tela_fim.blit(self.superficie3, ((tela_fim.get_width()-self.superficie3.get_width())/2, 300))
-                self.fonte_fim4 = pygame.font.SysFont(None, tamanho_do_titulo2)
-                self.superficie4 = self.fonte_fim4.render(texto4, True, cor_da_letra)
-                tela_fim.blit(self.superficie4, ((tela_fim.get_width()-self.superficie4.get_width())/2, 400))
-                
-                pygame.display.update()
         tela_fim = Fundo_Fim("Acabou sua corrida...", "Você bateu!", "Seu tempo foi de {0} segundos".format(tempo_segundo),"Tente novamente",(255,255,255),80,60,(0,0,0))      
         tela_fim.__init__
         JOGANDO = False
@@ -369,15 +375,16 @@ while JOGANDO:
             
     #Movimentação do fundo
     superficie.fill(PRETO)
-    fundo.rect.x += 0.2
-    if fundo.rect.right<0:
-        fundo.rect.x += fundo.rect.width
+    fundo.rect.y += 1
+    if fundo.rect.top >= 600:
+        fundo.rect.top = -600
     superficie.blit(fundo.image, fundo.rect)
 
-    fundo.rect2 = fundo.rect.copy()
-    fundo.rect2.x += fundo.rect2.width
-
+    fundo.rect2.y += 1
+    if fundo.rect2.top >= 600:
+        fundo.rect2.top = -600
     superficie.blit(fundo.image, fundo.rect2)
+
     
     #Desenha o placar
     superficie.blit(texto, pos_texto)     
