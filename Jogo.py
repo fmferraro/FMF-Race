@@ -51,8 +51,10 @@ assets['background_img'] = pygame.transform.scale(assets['background_img'], (LAR
 
 
 # Carregando sons do jogo: 
-pygame.mixer.music.load(os.path.join(som_dir, "MusicaFundo.oga"))
-pygame.mixer.music.set_volume(0.3)
+mixer.music.load(os.path.join(som_dir, "MusicaFundo.oga"))
+mixer.music.set_volume(0.3)
+assets['crash_sound'] = mixer.Sound(os.path.join(som_dir, "crash.oga"))
+mixer.Sound.set_volume(assets['crash_sound'] ,0.5)
 
 
 #Classes do jogo
@@ -359,6 +361,7 @@ while JOGANDO:
     hit_player_tree = pygame.sprite.spritecollide(player, all_tree, True)
 
     if len(hit_player_police) > 0 or len(hit_player_oil) > 0 or len(hit_player_tree) > 0: 
+        assets['crash_sound'].play()
         mixer.music.pause()
         tela_fim = Fundo_Fim("Acabou sua corrida...", "Você bateu!", "Seu tempo foi de {0} segundos".format(tempo_segundo),"Tente novamente",(255,255,255),80,60,(0,0,0))      
         tela_fim.__init__
