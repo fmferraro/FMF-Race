@@ -53,12 +53,14 @@ assets['background_img'] = pygame.transform.scale(assets['background_img'], (LAR
 # Carregando sons do jogo: 
 mixer.music.load(os.path.join(som_dir, "MusicaFundo.oga"))
 mixer.music.set_volume(0.3)
-assets['crash_sound'] = mixer.Sound(os.path.join(som_dir, "crash.oga"))
+assets['crash_sound'] = mixer.Sound(os.path.join(som_dir, "Crash.oga"))
 mixer.Sound.set_volume(assets['crash_sound'] ,0.5)
-
+assets["pause_sound"] = mixer.Sound(os.path.join(som_dir, "pause.oga"))
+mixer.Sound.set_volume(assets['pause_sound'] ,0.5)
+assets["horn_sound"] = mixer.Sound(os.path.join(som_dir, "PartyHorn.oga"))
+mixer.Sound.set_volume(assets['horn_sound'] ,0.5)
 
 #Classes do jogo
-
 class Fundo_intro(pygame.sprite.Sprite):
     def __init__(self,texto1,texto2,texto3,texto4,texto5,texto6,texto7,texto8,texto9, cor_da_letra, tamanho_do_titulo,tamanho_da_instrucao, cor_fundo):
         tela_jogo2 = pygame.display.set_mode(tamanho_tela)
@@ -319,6 +321,7 @@ while JOGANDO:
                 player.delta_player["direita"] = 1
 
             if evento.key == pygame.K_p:#Pausa o jogo
+                assets['pause_sound'].play()
                 if jogo != PAUSADO:
                     mixer.music.pause()
                     pause = font_pause.render("PAUSE", True, PRETO, BRANCO)
@@ -327,6 +330,9 @@ while JOGANDO:
                 else:
                     mixer.music.unpause()
                     jogo = RODANDO
+            
+            if evento.key == pygame.K_SPACE:#Bosina
+                assets['horn_sound'].play()
 
         #Verifica se soltou alguma tecla
         if evento.type == pygame.KEYUP:
