@@ -29,8 +29,8 @@ tree_largura = 100
 tree_comprimento = 100
 player_largura = 100
 player_comprimento = 207
-oil_largura = 80
-oil_comprimento = 80
+oil_largura = 70
+oil_comprimento = 70
 
 assets = {}
 
@@ -99,7 +99,7 @@ class Fundo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect2 = self.image.get_rect()
         self.rect2.y = -600
-        self.y_mov = 0
+        self.velocidade_fundo = 2
 
 class Player(pygame.sprite.Sprite):
     def __init__ (self, groups, assets):
@@ -113,15 +113,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 250
         self.rect.y = 400
 
-        self.velocidade_player = 0.2
+        self.velocidade_player = 3
         self.delta_player =  {"esquerda":0, "direita":0}
 
         self.groups = groups
         self.assets = assets
     
     def update(self, delta_time):
-        #self.rect.x += self.delta_player
-        self.rect.x += (self.delta_player["direita"] - self.delta_player["esquerda"]) * self.velocidade_player * delta_time
+        self.rect.x += (self.delta_player["direita"] - self.delta_player["esquerda"]) * self.velocidade_player 
 
         # Mantem o personagem dentro da tela
         if self.rect.right > 510:
@@ -139,16 +138,16 @@ class Police(pygame.sprite.Sprite):
         self.rect.x = randint(80, 320)
         self.rect.y = -100
 
-        self.velocidade_police = 0.2
+        self.velocidade_police = 2
 
     def update(self, delta_time):
         largura, altura = pygame.display.get_surface().get_size()
-        self.rect.y += self.velocidade_police * delta_time
+        self.rect.y += self.velocidade_police 
 
         if self.rect.y > 2000:
-            self.rect.y = 0
+            self.rect.y = -100
             self.rect.x = randint(80, 320)
-            self.rect.y += self.velocidade_police * delta_time
+            self.rect.y += self.velocidade_police 
 
 
 class Oil(pygame.sprite.Sprite):
@@ -159,18 +158,18 @@ class Oil(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.rect.x = randint(80, 430)
-        self.rect.y = 601
+        self.rect.y = -200
 
-        self.velocidade_oil = 0.2
+        self.velocidade_oil = 2
 
     def update(self, delta_time):
         largura, altura = pygame.display.get_surface().get_size()
-        self.rect.y += self.velocidade_oil * delta_time
+        self.rect.y += self.velocidade_oil 
 
         if self.rect.y > 800:
-            self.rect.y = 0
+            self.rect.y = -70
             self.rect.x = randint(80, 430)
-            self.rect.y += self.velocidade_oil * delta_time
+            self.rect.y += self.velocidade_oil 
 
 class Tree(pygame.sprite.Sprite):
     def __init__(self, assets):
@@ -182,16 +181,16 @@ class Tree(pygame.sprite.Sprite):
         self.rect.x = randint(80, 430)
         self.rect.y = 701
 
-        self.velocidade_tree = 0.2
+        self.velocidade_tree = 2
 
     def update(self, delta_time):
         largura, altura = pygame.display.get_surface().get_size()
-        self.rect.y += self.velocidade_tree * delta_time
+        self.rect.y += self.velocidade_tree 
 
         if self.rect.y > 1600:
-            self.rect.y = 0
+            self.rect.y = -100
             self.rect.x = randint(80, 430)
-            self.rect.y += self.velocidade_tree * delta_time
+            self.rect.y += self.velocidade_tree 
 
 
 
@@ -294,6 +293,7 @@ while Intro:
 
 delta_time=clock.tick(FPS)
 
+
 #Loop pricipal
 JOGANDO = True
 while JOGANDO:
@@ -378,12 +378,12 @@ while JOGANDO:
             
     #Movimentação do fundo
     superficie.fill(PRETO)
-    fundo.rect.y += 1
+    fundo.rect.y += 2
     if fundo.rect.top >= 600:
         fundo.rect.top = -600
     superficie.blit(fundo.image, fundo.rect)
 
-    fundo.rect2.y += 1
+    fundo.rect2.y += 2
     if fundo.rect2.top >= 600:
         fundo.rect2.top = -600
     superficie.blit(fundo.image, fundo.rect2)
