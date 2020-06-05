@@ -20,7 +20,7 @@ superficie = pygame.display.set_mode(tamanho_tela)
 pygame.display.set_caption("FMF Game")#Título da tela do jogo
 CINZA=(127, 127, 127)  #Cor de fundo
 FPS = 65
-
+vel = 3
 
 # Iniciar assets: 
 police_largura = 200
@@ -101,7 +101,7 @@ class Fundo(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect2 = self.image.get_rect()
         self.rect2.y = -600
-        self.velocidade_fundo = 2
+        self.velocidade_fundo = vel
 
 class Player(pygame.sprite.Sprite):
     def __init__ (self, groups, assets):
@@ -115,7 +115,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 250
         self.rect.y = 400
 
-        self.velocidade_player = 3
+        self.velocidade_player = vel
         self.delta_player =  {"esquerda":0, "direita":0}
 
         self.groups = groups
@@ -140,7 +140,7 @@ class Police(pygame.sprite.Sprite):
         self.rect.x = randint(80, 320)
         self.rect.y = -100
 
-        self.velocidade_police = 2
+        self.velocidade_police = vel
 
     def update(self, delta_time):
         largura, altura = pygame.display.get_surface().get_size()
@@ -162,7 +162,7 @@ class Oil(pygame.sprite.Sprite):
         self.rect.x = randint(80, 430)
         self.rect.y = -200
 
-        self.velocidade_oil = 2
+        self.velocidade_oil = vel
 
     def update(self, delta_time):
         largura, altura = pygame.display.get_surface().get_size()
@@ -183,7 +183,7 @@ class Tree(pygame.sprite.Sprite):
         self.rect.x = randint(80, 430)
         self.rect.y = 701
 
-        self.velocidade_tree = 2
+        self.velocidade_tree = vel
 
     def update(self, delta_time):
         largura, altura = pygame.display.get_surface().get_size()
@@ -349,6 +349,7 @@ while JOGANDO:
         tempo_segundo += 1
         texto = font.render("Tempo: "+str(tempo_segundo), True, (255,255,255), (0, 0, 0))
         timer = 0
+        
                     
     if jogo == PAUSADO:
         pygame.display.flip()
@@ -384,12 +385,12 @@ while JOGANDO:
             
     #Movimentação do fundo
     superficie.fill(PRETO)
-    fundo.rect.y += 2
+    fundo.rect.y += vel
     if fundo.rect.top >= 600:
         fundo.rect.top = -600
     superficie.blit(fundo.image, fundo.rect)
 
-    fundo.rect2.y += 2
+    fundo.rect2.y += vel
     if fundo.rect2.top >= 600:
         fundo.rect2.top = -600
     superficie.blit(fundo.image, fundo.rect2)
