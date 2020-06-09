@@ -142,6 +142,8 @@ class Police(pygame.sprite.Sprite):
 
         self.velocidade_police = vel
 
+        self.mask = pygame.mask.from_surface(self.image)
+
     def update(self, delta_time):
         largura, altura = pygame.display.get_surface().get_size()
         self.rect.y += self.velocidade_police 
@@ -161,6 +163,8 @@ class Oil(pygame.sprite.Sprite):
 
         self.rect.x = randint(80, 430)
         self.rect.y = -200
+
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.velocidade_oil = vel
 
@@ -182,6 +186,8 @@ class Tree(pygame.sprite.Sprite):
 
         self.rect.x = randint(80, 430)
         self.rect.y = 701
+
+        self.mask = pygame.mask.from_surface(self.image)
 
         self.velocidade_tree = vel
 
@@ -320,7 +326,8 @@ while JOGANDO:
             if evento.key == pygame.K_RIGHT:
                 player.delta_player["direita"] = 1
 
-            if evento.key == pygame.K_p:#Pausa o jogo
+            #Pausa o jogo
+            if evento.key == pygame.K_p:
                 assets['pause_sound'].play()
                 if jogo != PAUSADO:
                     mixer.music.pause()
@@ -331,7 +338,8 @@ while JOGANDO:
                     mixer.music.unpause()
                     jogo = RODANDO
             
-            if evento.key == pygame.K_SPACE:#Bosina
+            #Bosina
+            if evento.key == pygame.K_SPACE:
                 assets['horn_sound'].play()
 
         #Verifica se soltou alguma tecla
@@ -363,9 +371,9 @@ while JOGANDO:
     all_sprites.update(delta_time)
 
     #Colisões 
-    hit_player_police = pygame.sprite.spritecollide(player, all_police, True)
-    hit_player_oil = pygame.sprite.spritecollide(player, all_oil, True)
-    hit_player_tree = pygame.sprite.spritecollide(player, all_tree, True)
+    hit_player_police = pygame.sprite.spritecollide(player, all_police, True, pygame.sprite.collide_mask)
+    hit_player_oil = pygame.sprite.spritecollide(player, all_oil, True, pygame.sprite.collide_mask)
+    hit_player_tree = pygame.sprite.spritecollide(player, all_tree, True, pygame.sprite.collide_mask)
 
     if len(hit_player_police) > 0 or len(hit_player_oil) > 0 or len(hit_player_tree) > 0: 
         assets['crash_sound'].play()
@@ -382,7 +390,7 @@ while JOGANDO:
                 else:
                     contador += 1
 
-            
+  
     #Movimentação do fundo
     superficie.fill(PRETO)
     fundo.rect.y += vel
@@ -404,4 +412,3 @@ while JOGANDO:
     #Faz a atualização da tela
     pygame.display.flip()
     pygame.display.update()
-
