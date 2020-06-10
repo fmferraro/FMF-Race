@@ -19,7 +19,6 @@ tamanho_tela = (LARGURA, COMPRIMENTO)
 superficie = pygame.display.set_mode(tamanho_tela)
 pygame.display.set_caption("FMF Game")#Título da tela do jogo
 CINZA=(127, 127, 127)  #Cor de fundo
-FPS = 65
 vel = 3
 
 # Iniciar assets: 
@@ -121,8 +120,8 @@ class Player(pygame.sprite.Sprite):
         self.groups = groups
         self.assets = assets
     
-    def update(self, delta_time):
-        self.rect.x += (self.delta_player["direita"] - self.delta_player["esquerda"]) * self.velocidade_player 
+    def update(self, vel):
+        self.rect.x += (self.delta_player["direita"] - self.delta_player["esquerda"]) * vel
 
         # Mantem o personagem dentro da tela
         if self.rect.right > 510:
@@ -144,9 +143,10 @@ class Police(pygame.sprite.Sprite):
 
         self.mask = pygame.mask.from_surface(self.image)
 
-    def update(self, delta_time):
+    def update(self, vel):
         largura, altura = pygame.display.get_surface().get_size()
-        self.rect.y += self.velocidade_police 
+        self.rect.y += vel
+
 
         if self.rect.y > 2000:
             self.rect.y = -100
@@ -168,14 +168,17 @@ class Oil(pygame.sprite.Sprite):
 
         self.velocidade_oil = vel
 
-    def update(self, delta_time):
+    def update(self, vel):
         largura, altura = pygame.display.get_surface().get_size()
-        self.rect.y += self.velocidade_oil 
+        self.rect.y += vel
+
+
 
         if self.rect.y > 800:
             self.rect.y = -70
             self.rect.x = randint(80, 430)
             self.rect.y += self.velocidade_oil 
+
 
 class Tree(pygame.sprite.Sprite):
     def __init__(self, assets):
@@ -191,9 +194,10 @@ class Tree(pygame.sprite.Sprite):
 
         self.velocidade_tree = vel
 
-    def update(self, delta_time):
+    def update(self, vel):
         largura, altura = pygame.display.get_surface().get_size()
-        self.rect.y += self.velocidade_tree 
+        self.rect.y += vel
+
 
         if self.rect.y > 1600:
             self.rect.y = -100
@@ -280,6 +284,8 @@ intro = Fundo_intro("Bem Vindo","ao","Corona Run","Vamos ver se você é um bom 
 #Objeto para controle da atualizações de imagens
 clock = pygame.time.Clock() 
 FPS=60 #Velocidade que atualiza as imagens
+
+timer_vel=0
 
 #Rodando musica de fundo
 pygame.mixer.music.play(-1)
@@ -368,7 +374,7 @@ while JOGANDO:
             
             
     #Atualiza os sprites
-    all_sprites.update(delta_time)
+    all_sprites.update(vel)
 
     #Colisões 
     hit_player_police = pygame.sprite.spritecollide(player, all_police, True, pygame.sprite.collide_mask)
@@ -402,13 +408,22 @@ while JOGANDO:
     if fundo.rect2.top >= 600:
         fundo.rect2.top = -600
     superficie.blit(fundo.image, fundo.rect2)
+    print(fundo.rect.top-fundo.rect2.top)
 
-    
+
     #Desenha o placar
-    superficie.blit(texto, pos_texto)     
+    superficie.blit(texto, pos_texto)   
+
     #Desenhando os sprites
     all_sprites.draw(superficie)
-            
+
+    #Altera a velocidade
+    if timer_vel<180 and jogo!= PAUSADO:
+        timer_vel += 1
+    elif timer_vel>=180 and jogo!= PAUSADO:
+        vel+=1
+        timer_vel = 0
+
     #Faz a atualização da tela
     pygame.display.flip()
     pygame.display.update()
