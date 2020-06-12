@@ -57,7 +57,7 @@ mixer.Sound.set_volume(assets['crash_sound'] ,0.5)
 assets["pause_sound"] = mixer.Sound(os.path.join(som_dir, "pause.oga"))
 mixer.Sound.set_volume(assets['pause_sound'] ,0.5)
 assets["horn_sound"] = mixer.Sound(os.path.join(som_dir, "PartyHorn.oga"))
-mixer.Sound.set_volume(assets['horn_sound'] ,0.5)
+mixer.Sound.set_volume(assets['horn_sound'] ,0.3)
 
 #Classes do jogo
 class Fundo_intro(pygame.sprite.Sprite):
@@ -276,7 +276,7 @@ font_pause = pygame.font.SysFont("arial black", 40)
 mixer.music.play(-1)
 
     
-intro = Fundo_intro("Bem Vindo","ao","Corona Run","Vamos ver se você é um bom piloto...","Corra o maior tempo possível sem bater!","Caso encoste em um obstáculo, sua corrida acaba.","Pressione DIREITA ou ESQUERDA para mover o carro","Pressione P para pausar","Pressione ENTER para correr", (BRANCO), 80,30, (CINZA))
+intro = Fundo_intro("Bem Vindo","ao","FMF Race","Vamos ver se você é um bom piloto...","Corra o maior tempo possível sem bater!","Caso encoste em um obstáculo, sua corrida acaba.","Pressione DIREITA ou ESQUERDA para mover o carro","Pressione P para pausar","Pressione ENTER para correr", (BRANCO), 80,30, (CINZA))
 
 
 #Objeto para controle da atualizações de imagens
