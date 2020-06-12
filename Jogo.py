@@ -98,8 +98,6 @@ class Fundo(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = assets['background_img']
         self.rect = self.image.get_rect()
-        self.rect2 = self.image.get_rect()
-        self.rect2.y = -600
         self.velocidade_fundo = vel
 
 class Player(pygame.sprite.Sprite):
@@ -396,19 +394,16 @@ while JOGANDO:
                 else:
                     contador += 1
 
-  
+
     #Movimentação do fundo
     superficie.fill(PRETO)
     fundo.rect.y += vel
     if fundo.rect.top >= 600:
-        fundo.rect.top = -600
+        fundo.rect.top -= fundo.rect.height
     superficie.blit(fundo.image, fundo.rect)
-
-    fundo.rect2.y += vel
-    if fundo.rect2.top >= 600:
-        fundo.rect2.top = -600
-    superficie.blit(fundo.image, fundo.rect2)
-    print(fundo.rect.top-fundo.rect2.top)
+    fundo.rect3=fundo.rect.copy()
+    fundo.rect3.y-=fundo.rect3.height
+    superficie.blit(fundo.image, fundo.rect3)
 
 
     #Desenha o placar
